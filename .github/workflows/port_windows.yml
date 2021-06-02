@@ -74,7 +74,7 @@ jobs:
       with:
         path: /tmp/cache
         # Change this key if we upgrade the version
-        key: gcc-arm-10-2020-q4-win32-i
+        key: gcc-arm-10-2020-q4-win32-j
 
     - name: Fetch GCC Arm
       if: steps.cache-gcc-arm-zip.outputs.cache-hit != 'true'
@@ -97,6 +97,12 @@ jobs:
         which python; python --version; python -c "import cascadetoml"
         which python3; python3 --version; python3 -c "import cascadetoml"
         ls -al /tmp
+    - name: Check temp
+      run: |
+        echo "Checking /tmp"
+        ls -al /tmp
+        echo "Checking /tmp/cache"
+        ls -al /tmp/cache
 
 #    - uses: actions/checkout@v2
 #      with:
