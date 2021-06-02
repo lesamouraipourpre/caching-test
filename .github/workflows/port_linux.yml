@@ -77,8 +77,9 @@ jobs:
         ls -alr
         ls -l ~/.cache/gcc-arm.zip
         unzip -q -d /tmp ~/.cache/gcc-arm.zip
-        tar -C /tmp/gcc-arm-none-* -cf - . | tar -C /usr/local -xf -
-        ls -l /usr/local
+        mkdir -p ~/usr/local
+        tar -C /tmp/gcc-arm-none-* -cf - . | tar -C ~/usr/local -xf -
+        ls -l ~/usr/local
         pip install wheel
         # requirements_dev.txt doesn't install on windows. (with msys2 python)
         # instead, pick a subset for what we want to do
