@@ -3,83 +3,44 @@
 # SPDX-License-Identifier: Unlicense
 
 
-name: linux port
+name: Cache Test
 
 on:
   push:
   pull_request:
-    paths:
-      - '.github/workflows/*.yml'
-      - 'tools/**'
-      - 'py/**'
-      - 'extmod/**'
-      - 'lib/**'
-      - 'ports/unix/**'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
 
-    # We want to change the configuration of the git command that actions/checkout will be using (since it is not possible to set autocrlf through the action yet, see actions/checkout#226).
-    - run: git config --global core.autocrlf input
-      shell: bash
-
-    - name: Check python coding (bash)
-      run: |
-        python -c "import sys, locale; print(sys.getdefaultencoding(), locale.getpreferredencoding(False))"
-      shell: bash
-
-    # The goal of this was to test how things worked when the default file
-    # encoding (locale.getpreferedencoding()) was not UTF-8.  However, msys2
-    # python does use utf-8 as the preferred file encoding, and using
-    # actions/setup-python python3.8 gave a broken build, so we're not really
-    # testing what we wanted to test.
-    #
-    # however, commandline length limits are being tested so that does some
-    # good.
-    - name: Check python coding (msys2)
-      run: |
-        locale -v
-        which python; python --version
-        python -c "import sys, locale; print(sys.getdefaultencoding(), locale.getpreferredencoding(False))"
-        which python3; python3 --version
-        python3 -c "import sys, locale; print(sys.getdefaultencoding(), locale.getpreferredencoding(False))"
-
-#    - name: "Use GNU tar instead BSD tar"
-      # https://github.com/actions/cache/issues/576
-      # if: matrix.os == 'windows-latest'
-#      shell: cmd
-#       run: echo C:\Program Files\Git\usr\bin>>"%GITHUB_PATH%"
-
     - name: Cache Directory
+      id: cache-dir
       run: |
-        mkdir -p ~/.cache
+        CACHE_DIR=~/gcc-cache
+        mkdir -p $CACHE_DIR
+        echo "::set-output name=$CACHE_DIR"
 
-# Trigger a push
     - name: Check Cache for GCC Arm
       id: cache-gcc-arm-zip
       uses: actions/cache@v2
       with:
-        path: ~/.cache
+        path: ${{ steps.cache-dir-outputs.dir }}
         # Change this key if we upgrade the version
-        key: gcc-arm-10-2020-q4-win32-n
+        key: gcc-arm-10-2020-q4-win32-dev-a
 
     - name: Fetch GCC Arm
       if: steps.cache-gcc-arm-zip.outputs.cache-hit != 'true'
       # Change the key above if the version below changes
       run: |
-        wget --no-verbose -O ~/.cache/gcc-arm.zip https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-win32.zip
-        echo "Hello" > ~/.cache/hello.txt
+        wget --no-verbose -O ${{ steps.cache-dir-outputs.dir }}/gcc-arm.zip https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-win32.zip
+        echo "Hello" > ${{ steps.cache-dir-outputs.dir }}/hello.txt
 
     - name: Install dependencies
       run: |
-        ls -alr
-        ls -l ~/.cache/gcc-arm.zip
-        unzip -q -d /tmp ~/.cache/gcc-arm.zip
-        mkdir -p ~/usr/local
-        tar -C /tmp/gcc-arm-none-* -cf - . | tar -C ~/usr/local -xf -
-        ls -l ~/usr/local
+        unzip -q -d /tmp ${{ steps.cache-dir-outputs.dir }}/gcc-arm.zip
+        mkdir -p /tmp/usr/local
+        tar -C /tmp/gcc-arm-none-* -cf - . | tar -C /tmp/usr/local -xf -
         pip install wheel
         # requirements_dev.txt doesn't install on windows. (with msys2 python)
         # instead, pick a subset for what we want to do
@@ -88,14 +49,6 @@ jobs:
         which python; python --version; python -c "import cascadetoml"
         which python3; python3 --version; python3 -c "import cascadetoml"
         ls -al /tmp
-    - name: Check temp
-      run: |
-        echo "Checking /tmp"
-        ls -al /tmp
-        echo "Checking ~/.cache"
-        ls -al ~/.cache
-        echo "PWD"
-        pwd
 
 #    - uses: actions/checkout@v2
 #      with:
