@@ -65,29 +65,30 @@ jobs:
 
     - name: Cache Directory
       run: |
-        mkdir -p ~/.cache
+        mkdir -p /tmp/.cache
 
 # Trigger a push
     - name: Check Cache for GCC Arm
       id: cache-gcc-arm-zip
       uses: actions/cache@v2
       with:
-        path: ~/.cache/*
+        path: /tmp/.cache
         # Change this key if we upgrade the version
-        key: gcc-arm-10-2020-q4-win32-f
+        key: gcc-arm-10-2020-q4-win32-g
 
     - name: Fetch GCC Arm
       if: steps.cache-gcc-arm-zip.outputs.cache-hit != 'true'
       # Change the key above if the version below changes
       run: |
-        wget --no-verbose -O ~/.cache/gcc-arm.zip https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-win32.zip
+        wget --no-verbose -O /tmp/.cache/gcc-arm.zip https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-win32.zip
 
     - name: Install dependencies
       run: |
         ls -alr
-        ls -l ~/.cache/gcc-arm.zip
-        unzip -q -d /tmp ~/.cache/gcc-arm.zip
-        tar -C /tmp/gcc-arm-none-* -cf - . | tar -C /usr/local -xvf -
+        ls -l /tmp/.cache/gcc-arm.zip
+        unzip -q -d /tmp /tmp/.cache/gcc-arm.zip
+        tar -C /tmp/gcc-arm-none-* -cf - . | tar -C /usr/local -xf -
+        ls -l /usr/local
         pip install wheel
         # requirements_dev.txt doesn't install on windows. (with msys2 python)
         # instead, pick a subset for what we want to do
