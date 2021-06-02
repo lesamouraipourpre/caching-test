@@ -57,6 +57,12 @@ jobs:
         which python3; python3 --version
         python3 -c "import sys, locale; print(sys.getdefaultencoding(), locale.getpreferredencoding(False))"
 
+    - name: "Use GNU tar instead BSD tar"
+      # https://github.com/actions/cache/issues/576
+      # if: matrix.os == 'windows-latest'
+      shell: cmd
+      run: echo C:\Program Files\Git\usr\bin>>"%GITHUB_PATH%"
+
     - name: Cache Directory
       run: |
         mkdir -p ~/.cache
@@ -67,7 +73,7 @@ jobs:
       with:
         path: ~/.cache/
         # Change this key if we upgrade the version
-        key: gcc-arm-10-2020-q4-win32-c
+        key: gcc-arm-10-2020-q4-win32-d
 
     - name: Fetch GCC Arm
       if: steps.cache-gcc-arm-zip.outputs.cache-hit != 'true'
