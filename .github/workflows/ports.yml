@@ -19,7 +19,7 @@ jobs:
       run: |
         CACHE_DIR=~/gcc-cache
         mkdir -p $CACHE_DIR
-        echo "::set-output name=$CACHE_DIR"
+        echo "::set-output dir=$CACHE_DIR"
 
     - name: Check Cache for GCC Arm
       id: cache-gcc-arm-zip
