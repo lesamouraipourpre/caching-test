@@ -72,9 +72,9 @@ jobs:
       id: cache-gcc-arm-zip
       uses: actions/cache@v2
       with:
-        path: /tmp/cache
+        path: /tmp/cache/**
         # Change this key if we upgrade the version
-        key: gcc-arm-10-2020-q4-win32-j
+        key: gcc-arm-10-2020-q4-win32-k
 
     - name: Fetch GCC Arm
       if: steps.cache-gcc-arm-zip.outputs.cache-hit != 'true'
