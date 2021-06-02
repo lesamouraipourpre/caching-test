@@ -21,8 +21,6 @@ jobs:
           path: ~/gcc-cache
         - os: macos-latest
           path: ~/gcc-cache
-        - os: windows-latest
-          path: ~\gcc-cache
     steps:
 
     - name: Check Cache for GCC Arm
