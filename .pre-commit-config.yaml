@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: 2020 Diego Elio Pettenò
+#
+# SPDX-License-Identifier: Unlicense
+
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+        exclude: '^(tests/.*\.exp|tests/cmdline/.*|tests/.*/data/.*|ports/esp32s2/esp-idf-config/.*|ports/esp32s2/boards/.*/sdkconfig)'
+    -   id: trailing-whitespace
+        exclude: '^(tests/.*\.exp|tests/cmdline/.*|tests/.*/data/.*)'
+-   repo: https://github.com/python/black
+    rev: 20.8b1
+    hooks:
+    - id: black
+-   repo: https://github.com/fsfe/reuse-tool
+    rev: v0.12.1
+    hooks:
+    - id: reuse
