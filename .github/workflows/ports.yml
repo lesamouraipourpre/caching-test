@@ -11,7 +11,11 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+
     steps:
 
     - name: Cache Directory
@@ -27,7 +31,7 @@ jobs:
       with:
         path: ${{ steps.cache-dir.outputs.dir }}
         # Change this key if we upgrade the version
-        key: gcc-arm-10-2020-q4-win32-dev-a
+        key: ${{ runner.os }}-gcc-arm-10-2020-q4-win32-dev-a
 
     - name: Fetch GCC Arm
       if: steps.cache-gcc-arm-zip.outputs.cache-hit != 'true'
