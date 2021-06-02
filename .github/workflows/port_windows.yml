@@ -63,7 +63,7 @@ jobs:
       shell: cmd
       run: echo C:\Program Files\Git\usr\bin>>"%GITHUB_PATH%"
 
-    - name: Cache Directory - Why is Actions not running
+    - name: Cache Directory
       run: |
         mkdir -p ~/.cache
 
@@ -83,6 +83,7 @@ jobs:
 
     - name: Install dependencies
       run: |
+        ls -alr
         ls -l ~/.cache/gcc-arm.zip
         unzip -q -d /tmp ~/.cache/gcc-arm.zip
         tar -C /tmp/gcc-arm-none-* -cf - . | tar -C /usr/local -xf -
