@@ -74,7 +74,7 @@ jobs:
       with:
         path: /tmp/cache
         # Change this key if we upgrade the version
-        key: gcc-arm-10-2020-q4-win32-k
+        key: gcc-arm-10-2020-q4-win32-l
 
     - name: Fetch GCC Arm
       if: steps.cache-gcc-arm-zip.outputs.cache-hit != 'true'
@@ -104,6 +104,8 @@ jobs:
         ls -al /tmp
         echo "Checking /tmp/cache"
         ls -al /tmp/cache
+        echo "PWD"
+        pwd
 
 #    - uses: actions/checkout@v2
 #      with:
