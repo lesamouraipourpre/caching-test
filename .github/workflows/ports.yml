@@ -36,6 +36,7 @@ jobs:
       if: steps.cache-gcc-arm-zip.outputs.cache-hit != 'true'
       # Change the key above if the version below changes
       run: |
+        mkdir -p ${{ matrix.path }}
         wget --no-verbose -O ${{ matrix.path }}/gcc-arm.zip https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-win32.zip
 
     - name: Install dependencies
