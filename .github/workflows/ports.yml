@@ -43,12 +43,12 @@ jobs:
         unzip -q -d /tmp ${{ matrix.path }}/gcc-arm.zip
         mkdir -p /tmp/usr/local
         tar -C /tmp/gcc-arm-none-* -cf - . | tar -C /tmp/usr/local -xf -
-        pip install wheel
+        pip3 install wheel
         # requirements_dev.txt doesn't install on windows. (with msys2 python)
         # instead, pick a subset for what we want to do
-        pip install cascadetoml jinja2 typer
+        pip3 install cascadetoml jinja2 typer
         # check that installed packages work....?
-        which python; python --version; python -c "import cascadetoml"
+        which python; python --version; #python -c "import cascadetoml"
         which python3; python3 --version; python3 -c "import cascadetoml"
         ls -al /tmp
         ls -al ${{ matrix.path }}
