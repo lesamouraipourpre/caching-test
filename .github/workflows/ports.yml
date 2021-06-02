@@ -25,7 +25,7 @@ jobs:
       id: cache-gcc-arm-zip
       uses: actions/cache@v2
       with:
-        path: ${{ steps.cache-dir-outputs.dir }}
+        path: ${{ steps.cache-dir.outputs.dir }}
         # Change this key if we upgrade the version
         key: gcc-arm-10-2020-q4-win32-dev-a
 
@@ -33,12 +33,12 @@ jobs:
       if: steps.cache-gcc-arm-zip.outputs.cache-hit != 'true'
       # Change the key above if the version below changes
       run: |
-        wget --no-verbose -O ${{ steps.cache-dir-outputs.dir }}/gcc-arm.zip https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-win32.zip
-        echo "Hello" > ${{ steps.cache-dir-outputs.dir }}/hello.txt
+        wget --no-verbose -O ${{ steps.cache-dir.outputs.dir }}/gcc-arm.zip https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-win32.zip
+        echo "Hello" > ${{ steps.cache-dir.outputs.dir }}/hello.txt
 
     - name: Install dependencies
       run: |
-        unzip -q -d /tmp ${{ steps.cache-dir-outputs.dir }}/gcc-arm.zip
+        unzip -q -d /tmp ${{ steps.cache-dir.outputs.dir }}/gcc-arm.zip
         mkdir -p /tmp/usr/local
         tar -C /tmp/gcc-arm-none-* -cf - . | tar -C /tmp/usr/local -xf -
         pip install wheel
