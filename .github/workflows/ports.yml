@@ -34,7 +34,6 @@ jobs:
       # Change the key above if the version below changes
       run: |
         wget --no-verbose -O ${{ steps.cache-dir.outputs.dir }}/gcc-arm.zip https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-win32.zip
-        echo "Hello" > ${{ steps.cache-dir.outputs.dir }}/hello.txt
 
     - name: Install dependencies
       run: |
