@@ -25,10 +25,10 @@ jobs:
     - run: git config --global core.autocrlf input
       shell: bash
 
-    - name: Check python coding (cmd)
+    - name: Check python coding (bash)
       run: |
         python -c "import sys, locale; print(sys.getdefaultencoding(), locale.getpreferredencoding(False))"
-      shell: cmd
+      shell: bash
 
     # The goal of this was to test how things worked when the default file
     # encoding (locale.getpreferedencoding()) was not UTF-8.  However, msys2
